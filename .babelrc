@@ -1,0 +1,25 @@
+{
+  "env": {
+    "development": {
+      "compact": false
+    }
+  },
+  "presets": [
+    [
+      "next/babel",
+      {
+        "styled-jsx": {
+          "plugins": [
+            "styled-jsx-plugin-sass"
+          ]
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-private-methods"
+  ],
+  "ignore": [
+    "node_modules"
+  ]
+}

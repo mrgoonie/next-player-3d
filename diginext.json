@@ -1,0 +1,44 @@
+{
+  "git": {
+    "creator": "teexiii",
+    "repoURL": "https://bitbucket.org/digitopvn/nuviworld-web/src"
+  },
+  "isStaticSite": false,
+  "projectSlug": "nuviworld-web",
+  "projectName": "NuviWorld Web",
+  "namespace": "nuvi-world-2020-ns",
+  "username": "teexiii",
+  "version": "v1.3.12",
+  "diginext-cli": "0.4.3",
+  "domain": {
+    "staging": [],
+    "canary": ["nuvi.zii.vn"],
+    "prod": ["nuvi.com.vn", "www.nuvi.com.vn"],
+    "dev": ["dev2.digitop.vn"]
+  },
+  "cdn-host": {
+    "dev": "https://google-cdn.digitop.vn/nuviworld-web/dev",
+    "dev-nocache": "https://google-cdn.digitop.vn/nuviworld-web/dev",
+    "prod": "https://cdn.nuvi.com.vn",
+    "prod-nocache": "https://cdn.nuvi.com.vn",
+    "canary": "https://google-cdn.digitop.vn/nuviworld-web/canary",
+    "canary-nocache": "https://google-cdn.digitop.vn/nuviworld-web/canary",
+    "staging": "https://google-cdn.digitop.vn/nuviworld-web/staging",
+    "staging-nocache": "https://google-cdn.digitop.vn/nuviworld-web/staging"
+  },
+  "cdn": {
+    "dev": false,
+    "staging": false,
+    "canary": true,
+    "prod": true
+  },
+  "pipeline": {
+    "canary": true,
+    "prod": {
+      "project-id": "nuvi-world",
+      "cluster": "nuvi-world",
+      "zone": "${GCLOUD_ZONE}",
+      "service-account": "${NUVI_GKE_SA}"
+    }
+  }
+}

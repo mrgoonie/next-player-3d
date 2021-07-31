@@ -9,9 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/core": "7.14.8",
+    "@babel/plugin-proposal-private-methods": "7.14.5",
+    "ahooks": "2.10.9",
+    "autoprefixer": "10.3.1",
+    "camera-controls": "1.30.0",
+    "gsap": "3.7.1",
+    "load-bmfont": "1.4.1",
     "next": "11.0.1",
+    "next-transpile-modules": "8.0.0",
+    "node-sass": "6.0.1",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "sass": "1.37.0",
+    "styled-jsx-plugin-sass": "1.0.0",
+    "three": "0.131.1"
   },
   "devDependencies": {
     "eslint": "7.32.0",
