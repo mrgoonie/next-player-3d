@@ -1,11 +1,9 @@
 import DashkitButton from "components/dashkit/Buttons";
 import { HorizontalList } from "components/diginext/layout/ListLayout";
-import { CHARACTER_PREFIX } from "modules/website/battle-arena/DATA";
-import asset from "plugins/assets/asset";
 import Player3D from "plugins/player-3d";
 import React, { useRef, useState } from "react";
 
-const MODEL_BASE_PATH = CHARACTER_PREFIX;
+const MODEL_BASE_PATH = "https://dev4.digitop.vn/demo/201106_Nuvi_World/public/models/characters";
 
 const Player3DPage = () => {
 	const [controlEnabled, setControlEnabled] = useState(false);
@@ -14,17 +12,14 @@ const Player3DPage = () => {
 	const [isAnimationPlay1, setIsAnimationPlay1] = useState(false);
 
 	const [animationSrc1, setAnimationSrc1] = useState(
-		CHARACTER_PREFIX + "/raijusoibang_1/animations/attack_normal/Wolf_lv1@attack-normal_0.glb"
+		MODEL_BASE_PATH + "/raijusoibang_1/animations/attack_normal/Wolf_lv1@attack-normal_0.glb"
 	);
 
 	const [animSpeed2, setAnimSpeed2] = useState(0.8);
 
 	return (
 		<>
-			<HorizontalList gutter={5} rowGutter={5} wrap>
-				<DashkitButton href="/examples" type="secondary">
-					{"< "}EXAMPLES
-				</DashkitButton>
+			<HorizontalList gutter={5} wrap>
 				<DashkitButton onClick={() => setControlEnabled(!controlEnabled)}>
 					CONTROL ENABLED: {controlEnabled.toString().toUpperCase()}
 				</DashkitButton>
@@ -61,6 +56,9 @@ const Player3DPage = () => {
 					&.bg-gray {
 						background-color: lightgray;
 					}
+					&.bg-black {
+						background-color: black;
+					}
 
 					&.w-300 {
 						max-width: 300px;
@@ -68,12 +66,12 @@ const Player3DPage = () => {
 				}
 			`}</style>
 
-			<HorizontalList wrap style={{ backgroundImage: `url(${asset("/images/backgrounds/training-room-mb.jpg")})` }}>
+			<HorizontalList wrap style={{ backgroundImage: `url("/images/backgrounds/training-room-mb.jpg")` }}>
 				<div className="player-holder w-300">
 					<Player3D
 						className="player-1"
 						debug
-						controlEnabled
+						controlEnabled={controlEnabled}
 						// zoomEnabled
 						fitToViewport
 						// scale={200}
@@ -92,11 +90,11 @@ const Player3DPage = () => {
 						debug
 						className="player-2"
 						fitToViewport
-						controlEnabled
+						controlEnabled={controlEnabled}
 						// scale={120}
 						addScale={0.7}
 						// position={[0, -100, 0]}
-						rotation={[0, 1.5, 0]}
+						// rotation={[0, 1.5, 0]}
 						src={MODEL_BASE_PATH + "/raijusoibang_2/Wolf_lv2.glb"}
 						textureSrc={MODEL_BASE_PATH + "/raijusoibang_2/textures/wolf.png"}
 						animationSrc={MODEL_BASE_PATH + "/raijusoibang_2/animations/attack_normal/Wolf_lv2@Attack-normal_0.glb"}
@@ -109,23 +107,26 @@ const Player3DPage = () => {
 						className="player-3"
 						debug
 						fitToViewport
-						// controlEnabled={controlEnabled}
+						alignCenter
+						controlEnabled={controlEnabled}
 						// scale={100}
-						addScale={0.85}
+						addScale={0.25}
 						// rotation={[0, -1.5, 0]}
 						src={MODEL_BASE_PATH + "/raijusoibang_3/Wolf_lv3.glb"}
 						textureSrc={MODEL_BASE_PATH + "/raijusoibang_3/textures/Wolf_lv3.jpg"}
 						animationSrc={MODEL_BASE_PATH + "/raijusoibang_3/animations/attack_normal/Wolf_lv3@attack_normal_0.glb"}
 						animationOptions={{ loop: "repeat", timeScale: 0.8 }}
+						skyboxSrc="/images/textures/skybox/equirectangular/sky_1.png"
 					/>
 				</div>
 
-				<div className="player-holder w-300 bg-gray">
+				<div className="player-holder w-300 bg-black">
 					<Player3D
 						className="player-4"
+						debug
 						fitToViewport
-						debug={true}
-						// controlEnabled={true}
+						alignCenter
+						controlEnabled={controlEnabled}
 						// zoomEnabled={true}
 						// scale={200}
 						// rotation={[0, 0.8, 0]}
@@ -134,7 +135,6 @@ const Player3DPage = () => {
 						textureSrc={MODEL_BASE_PATH + "/hoathin_1/textures/Dragon_lv1.png"}
 						animationSrc={MODEL_BASE_PATH + "/hoathin_1/animations/attack_normal/dragon_lv1@attack-normal_0.glb"}
 						animationOptions={{ loop: "pingpong", timeScale: 0.8 }}
-						// skyboxSrc={asset("/images/textures/skybox/equirectangular/sky_1.png")}
 					/>
 				</div>
 			</HorizontalList>

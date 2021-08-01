@@ -173,7 +173,7 @@ export default class PlayerLoader extends THREE.EventDispatcher {
           }
           const rt = new THREE.WebGLCubeRenderTarget(object.image.height);
           rt.fromEquirectangularTexture(renderer, object);
-          obj3d = rt;
+          obj3d = rt.texture;
         } else {
           if (typeof object.scene != "undefined") {
             // console.log (object);

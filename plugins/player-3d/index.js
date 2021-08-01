@@ -5,7 +5,6 @@ import { useCreation } from "ahooks";
 import PlayerLoader from "./loader";
 import { AppEvent } from "./const";
 import PlayerApp, { loadSkybox, getLoopValue, loadModel, getModelSize } from "./app";
-import asset from "plugins/assets/asset";
 import ThreeUtils from "plugins/three/ThreeUtils";
 
 /**
@@ -55,11 +54,11 @@ const Player3D = ({
 	controlEnabled = false,
 	zoomEnabled = false,
 	alignCenter = false,
+	fitToViewport = false,
 	position,
 	rotation,
 	scale,
 	addScale,
-	fitToViewport = true,
 	cameraDistance = 300,
 	controlMinDistance = 10,
 	controlMaxDistance = 990,
@@ -86,10 +85,6 @@ const Player3D = ({
 		[]
 	);
 
-	/**
-	 * @type {React.MutableRefObject<PlayerApp>}
-	 */
-	const appRef = useRef();
 	const objectRef = useRef();
 	const mixerRef = useRef();
 	/**
@@ -100,18 +95,14 @@ const Player3D = ({
 	useEffect(() => {
 		if (node) {
 			app.init(node);
-			// setApp(player);
 
 			if (onInit) onInit(app);
 
-			// console.log("player", player);
-			const { scene, camera, controls, renderer, fitView } = app;
-			// console.log("scene", scene);
+			const { scene, camera, controls, renderer } = app;
 
 			// create skybox
 			if (skyboxSrc) {
 				loadSkybox(skyboxSrc, renderer).then((skybox) => {
-					// scene.add(skybox);
 					scene.background = skybox;
 				});
 			}
@@ -146,8 +137,9 @@ const Player3D = ({
 
 					if (position) model.position.fromArray(position);
 					if (rotation) model.rotation.fromArray(rotation);
-					if (controlRotation) {
+					if (controlRotation.horizontal || controlRotation.vertical) {
 						// TO DO: Apply control rotation
+						console.log("control rotated...")
 						controls.rotateTo(
 							controlRotation.horizontal || controls.azimuthAngle,
 							controlRotation.vertical || controls.polarAngle,
@@ -211,7 +203,7 @@ const Player3D = ({
 
 	useEffect(() => {
 		// const app = appRef.current;
-		if (controlRotation && app && app.isInit) {
+		if ((controlRotation.horizontal || controlRotation.vertical) && app && app.isInit) {
 			console.log(`control changing...`);
 
 			const { controls } = app;
@@ -233,36 +225,38 @@ const Player3D = ({
 	}, [controlRotation.horizontal, controlRotation.vertical, controlRotation.animation, cameraDistance]);
 
 	useEffect(() => {
-		// const app = appRef.current;
-
 		if (app) {
-			const { controls, fitView } = app;
+			const { controls } = app;
 
 			app.setGridVisible(debug);
-
-			app.setControlZoom(zoomEnabled);
-
-			app.setControlEnabled(controlEnabled);
 
 			if (objectRef.current) {
 				const model = objectRef.current;
 
-				if (scale) model.scale.setScalar(scale);
+				let shouldFitToViewport = fitToViewport;
+				if (scale) {
+					model.scale.setScalar(scale);
+					shouldFitToViewport = false;
+				}
 
 				if (position) model.position.fromArray(position);
 
 				if (rotation) model.rotation.fromArray(rotation);
 
 				// fit object into view
-				// if (fitToViewport) {
-				// 	controls.reset();
-				// 	controls.fitToBox(model, false);
-				// }
+				if (shouldFitToViewport) controls.fitToBox(model, false);
 
-				// controls.setTarget(model.position.x, model.position.y, model.position.z, false);
+				// addScale
+				if (addScale) model.scale.setScalar(addScale);
 
-				// // addScale
-				// if (addScale) model.scale.setScalar(addScale);
+				// centerize model:
+				if (alignCenter) {
+					let boundingVector = getModelSize(model);
+					model.position.setY(-boundingVector.y / 2);
+					controls.setTarget(0, 0, 0, false);
+				} else {
+					controls.setTarget(model.position.x, model.position.y, model.position.z, false);
+				}
 			}
 
 			const { loop, timeScale } = animationOptions;
@@ -282,10 +276,17 @@ const Player3D = ({
 		rotation,
 		scale,
 		addScale,
-		controlEnabled,
-		zoomEnabled,
 		fitToViewport,
+		alignCenter,
 	]);
+
+	useEffect(() => {
+		if (app) {
+			// console.log("zoom/control enabled");
+			app.setControlZoom(zoomEnabled);
+			app.setControlEnabled(controlEnabled);
+		}
+	}, [controlEnabled, zoomEnabled]);
 
 	useEffect(() => {
 		// const app = appRef.current;
