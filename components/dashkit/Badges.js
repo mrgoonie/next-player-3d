@@ -134,7 +134,6 @@ const AdminBadge = ({
     <Badge
       padding={padding}
       onClick={onClick}
-      textColor="white"
       fontSize={fontSize}
       bgColor={bgColor}
       bgColorActive={bgColorActive}
